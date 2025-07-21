@@ -5,7 +5,7 @@ import pyperclip
 fav_file = "favorite_quotes.txt"
 quote_file = "quote_of_the_day.txt"
 
-print("💬 Welcome to the Not-So-Fancy Advice Generator!")
+print(" Welcome to the Not-So-Fancy Advice Generator!")
 
 while True:
     try:
@@ -23,7 +23,7 @@ while True:
     if copy_choice == 'y':
         try:
             pyperclip.copy(advice)
-            print("✅ Copied! Paste away 📝")
+            print("✅ Copied! Paste away ")
         except:
             print("🚫 Copying failed. Maybe pyperclip isn’t working on this system.")
 
