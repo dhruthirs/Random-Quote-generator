@@ -1,0 +1,57 @@
+import requests
+import pyperclip
+
+# Just gonna store stuff in these two files
+fav_file = "favorite_quotes.txt"
+quote_file = "quote_of_the_day.txt"
+
+print("💬 Welcome to the Not-So-Fancy Advice Generator!")
+
+while True:
+    try:
+        # Let's try to get something wise from the internet
+        res = requests.get("https://api.adviceslip.com/advice")
+        advice_data = res.json()
+        advice = advice_data['slip']['advice']
+        print("\n👉", advice)
+    except Exception as e:
+        print("⚠️ Uh-oh. Couldn’t fetch advice. Internet being moody?")
+        continue  # Try again from the top
+
+    # Do you wanna copy it? Up to you.
+    copy_choice = input("Copy to clipboard? (y/n): ").strip().lower()
+    if copy_choice == 'y':
+        try:
+            pyperclip.copy(advice)
+            print("✅ Copied! Paste away 📝")
+        except:
+            print("🚫 Copying failed. Maybe pyperclip isn’t working on this system.")
+
+    # Saving it as a favorite — who knows when we might need it
+    save_fav = input("Save to favorites? (y/n): ").strip().lower()
+    if save_fav == 'y':
+        try:
+            with open(fav_file, 'a') as f:
+                f.write(advice + '\n')
+            print("⭐ Nice! It’s now one of your favorite quotes.")
+        except:
+            print("🛑 Couldn't save it. File might be locked or missing.")
+
+    # One and only Quote of the Day — overwrites every time, just FYI
+    make_qotd = input("Save as Quote of the Day? (y/n): ").strip().lower()
+    if make_qotd == 'y':
+        try:
+            with open(quote_file, 'w') as f:
+                f.write("💡 Quote of the Day:\n")
+                f.write(advice + '\n')  # Added a newline for clarity
+            print("📄 Saved it as your quote_of_the_day.txt")
+        except:
+            print("📝 Couldn't write to the QOTD file... weird.")
+
+    # Keep going? Or have we hit peak wisdom?
+    more = input("Want another quote? (y/n): ").strip().lower()
+    if more != 'y':
+        print("\n👋 Alrighty! That's enough advice for now. Go be brilliant.")
+        break
+
+# TODO: Maybe add a search feature or filter by mood someday?
